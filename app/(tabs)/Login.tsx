@@ -1,14 +1,15 @@
-import { View, Text, Button } from "react-native";
 import {
   GoogleSignin,
   GoogleSigninButton,
   SignInResponse,
+  User,
 } from "@react-native-google-signin/google-signin";
 import { useEffect, useState } from "react";
+import { Button, Text, View } from "react-native";
 
 const Login = () => {
-  const [error, setError] = useState(undefined);
-  const [userInfo, setUserInfo] = useState(undefined);
+  const [error, setError] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -19,21 +20,23 @@ const Login = () => {
   const signin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      setUserInfo(user);
-    } catch (err: Error) {
-      setError(err);
+      const res: SignInResponse = await GoogleSignin.signIn();
+      setUserInfo(res.data);
+    } catch (err: unknown) {
+      if (err instanceof Error) setError(err.message);
+      else setError(String(err));
     }
   };
 
   const logout = () => {
-    setUserInfo(undefined);
+    setUserInfo(null);
+    setError(null);
     GoogleSignin.revokeAccess();
     GoogleSignin.signOut();
   };
 
   return (
-    <View>
+    <View className="flex-1 items-center justify-center">
       <Text>{JSON.stringify(error)}</Text>
       {userInfo && <Text>{JSON.stringify(userInfo.user)}</Text>}
       {userInfo ? (
