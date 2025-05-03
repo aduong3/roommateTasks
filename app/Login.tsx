@@ -4,12 +4,15 @@ import {
   SignInResponse,
   User,
 } from "@react-native-google-signin/google-signin";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
+import { AuthContext } from "../utils/authContext";
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
+  const authState = useContext(AuthContext);
+  const { isLoggedIn, logIn, logOut } = authState;
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -22,6 +25,8 @@ const Login = () => {
       await GoogleSignin.hasPlayServices();
       const res: SignInResponse = await GoogleSignin.signIn();
       setUserInfo(res.data);
+      // setIsLoggedIn(true);
+      logIn();
     } catch (err: unknown) {
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
@@ -31,6 +36,8 @@ const Login = () => {
   const logout = () => {
     setUserInfo(null);
     setError(null);
+    // setIsLoggedIn(false);
+    logOut();
     GoogleSignin.revokeAccess();
     GoogleSignin.signOut();
   };
