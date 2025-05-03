@@ -5,7 +5,7 @@ import {
   User,
 } from "@react-native-google-signin/google-signin";
 import { useContext, useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Image, Text, View } from "react-native";
 import { AuthContext } from "../utils/authContext";
 
 const Login = () => {
@@ -45,7 +45,19 @@ const Login = () => {
   return (
     <View className="flex-1 items-center justify-center">
       <Text>{JSON.stringify(error)}</Text>
-      {userInfo && <Text>{JSON.stringify(userInfo.user)}</Text>}
+      {userInfo && (
+        <>
+          {userInfo.user.photo && (
+            <View>
+              <Image
+                source={{ uri: userInfo.user.photo }}
+                style={{ width: 100, height: 100, borderRadius: 50 }}
+              />
+            </View>
+          )}
+          <Text>{JSON.stringify(userInfo.user)}</Text>
+        </>
+      )}
       {userInfo ? (
         <Button title="Logout" onPress={logout} />
       ) : (

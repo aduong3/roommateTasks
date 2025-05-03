@@ -1,6 +1,14 @@
 import { useRouter } from "expo-router";
 import { createContext, PropsWithChildren, useState } from "react";
 
+type User = {
+  id: string | number;
+  givenName: string;
+  familyName: string;
+  email: string;
+  photo: string;
+};
+
 type AuthState = {
   isLoggedIn: boolean;
   logIn: () => void;
