@@ -10,6 +10,7 @@ type User = {
 };
 
 type AuthState = {
+  user?: User;
   isLoggedIn: boolean;
   logIn: () => void;
   logOut: () => void;
@@ -23,6 +24,7 @@ export const AuthContext = createContext<AuthState>({
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   const logIn = () => {

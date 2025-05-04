@@ -26,6 +26,7 @@ const Login = () => {
       const res: SignInResponse = await GoogleSignin.signIn();
       setUserInfo(res.data);
       // setIsLoggedIn(true);
+
       logIn();
     } catch (err: unknown) {
       if (err instanceof Error) setError(err.message);
