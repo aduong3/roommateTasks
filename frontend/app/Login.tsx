@@ -8,6 +8,8 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Image, Text, View } from "react-native";
 import { AuthContext } from "../utils/authContext";
 
+const webClient = process.env.EXPO_PUBLIC_WEBCLIENT_ID;
+
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
@@ -16,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: process.env.EXPO_PUBLIC_WEBCLIENT_ID,
+      webClientId: webClient,
     });
   }, []);
 
@@ -26,6 +28,7 @@ const Login = () => {
       const res: SignInResponse = await GoogleSignin.signIn();
       setUserInfo(res.data);
       // setIsLoggedIn(true);
+      const tokens = await GoogleSignin.getTokens();
 
       logIn();
     } catch (err: unknown) {
@@ -34,13 +37,13 @@ const Login = () => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUserInfo(null);
     setError(null);
     // setIsLoggedIn(false);
     logOut();
-    GoogleSignin.revokeAccess();
-    GoogleSignin.signOut();
+    await GoogleSignin.signOut();
+    await GoogleSignin.revokeAccess();
   };
 
   return (
