@@ -19,7 +19,7 @@ export const verifyGoogleLogIn = async (req: Request, res: Response) => {
         token: decodedToken,
       },
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(400).json({
       status: "failed",
       message: err.message,
