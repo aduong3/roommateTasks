@@ -1,7 +1,17 @@
 import express from "express";
 import userRouter from "./routes/userRouter";
+import cors from "cors";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: ["http//localhost:3000"],
+    credentials: true,
+  })
+);
+
+app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 

@@ -38,3 +38,5 @@ yarn-error.*
 
 app-example
 .env
+firebase-service-account.json
+firebaseConfig.js

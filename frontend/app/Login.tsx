@@ -41,13 +41,9 @@ export default function Login() {
       );
 
       const firebaseIdToken = await firebaseUserCredential.user.getIdToken();
-
-      console.log(firebaseIdToken);
-
+      // console.log(firebaseIdToken);
       // setIsLoggedIn(true);
-      // const tokens = await GoogleSignin.getTokens();
-      // console.log(tokens.idToken);
-      // await googleVerifyApi(res?.data?.idToken);
+      await googleVerifyApi(firebaseIdToken);
 
       logIn();
     } catch (err: unknown) {
