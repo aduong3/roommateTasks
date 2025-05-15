@@ -9,11 +9,11 @@ export default function RootLayout() {
       <StatusBar hidden={true} />
       <Stack>
         <Stack.Screen
-          name="(protected)"
+          name="Login"
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
-          name="Login"
+          name="(protected)"
           options={{ headerShown: false, animation: "none" }}
         />
       </Stack>

@@ -7,10 +7,13 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { Button, Image, Text, View } from "react-native";
 import { AuthContext } from "../utils/authContext";
+import { googleVerifyApi } from "../services/apiAuth";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "../firebaseConfig";
 
 const webClient = process.env.EXPO_PUBLIC_WEBCLIENT_ID;
 
-const Login = () => {
+export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const authState = useContext(AuthContext);
@@ -27,8 +30,24 @@ const Login = () => {
       await GoogleSignin.hasPlayServices();
       const res: SignInResponse = await GoogleSignin.signIn();
       setUserInfo(res.data);
+
+      const googleCredential = GoogleAuthProvider.credential(
+        res?.data?.idToken
+      );
+
+      const firebaseUserCredential = await signInWithCredential(
+        auth,
+        googleCredential
+      );
+
+      const firebaseIdToken = await firebaseUserCredential.user.getIdToken();
+
+      console.log(firebaseIdToken);
+
       // setIsLoggedIn(true);
-      const tokens = await GoogleSignin.getTokens();
+      // const tokens = await GoogleSignin.getTokens();
+      // console.log(tokens.idToken);
+      // await googleVerifyApi(res?.data?.idToken);
 
       logIn();
     } catch (err: unknown) {
@@ -73,6 +92,4 @@ const Login = () => {
       )}
     </View>
   );
-};
-
-export default Login;
+}
