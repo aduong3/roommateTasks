@@ -14,21 +14,40 @@ export const verifyGoogleLogIn = async (req: Request, res: Response) => {
 
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 
-    // console.log("decodedToken:", decodedToken);
-    // const uid = decodedToken.uid;
+    const { email, picture, name } = decodedToken;
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        // token: decodedToken,
-        // uid,
-        message: "Test",
-      },
-    });
-  } catch (err: any) {
-    res.status(400).json({
-      status: "failed",
-      message: err.message,
-    });
+    // console.log("decodedToken:", decodedToken);
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      // console.log(user);
+      res.status(200).json({
+        status: "success",
+        data: {
+          user,
+        },
+      });
+    } else {
+      const newUser = await User.create({ email, photo: picture, name });
+      res.status(200).json({
+        status: "success",
+        data: {
+          user: newUser,
+        },
+      });
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({
+        status: "failed",
+        message: err.message,
+      });
+    } else {
+      res.status(400).json({
+        status: "failed",
+        message: err,
+      });
+    }
   }
 };

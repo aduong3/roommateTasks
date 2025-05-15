@@ -46,7 +46,7 @@ export default function Login() {
       await googleVerifyApi(firebaseIdToken);
 
       logIn();
-    } catch (err: unknown) {
+    } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
     }
