@@ -10,6 +10,7 @@ import { AuthContext } from "../utils/authContext";
 import { googleVerifyApi } from "../services/apiAuth";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import * as SecureStore from "expo-secure-store";
 
 const webClient = process.env.EXPO_PUBLIC_WEBCLIENT_ID;
 
@@ -17,7 +18,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const authState = useContext(AuthContext);
-  const { isLoggedIn, logIn, logOut } = authState;
+  const { logIn, logOut } = authState;
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -41,11 +42,15 @@ export default function Login() {
       );
 
       const firebaseIdToken = await firebaseUserCredential.user.getIdToken();
-      // console.log(firebaseIdToken);
-      // setIsLoggedIn(true);
-      await googleVerifyApi(firebaseIdToken);
+      const userData = await googleVerifyApi(firebaseIdToken);
 
-      logIn();
+      if (!userData) return;
+
+      await SecureStore.setItemAsync("jwt", userData.token);
+
+      const { email, name, photo, _id: id } = userData.user;
+
+      logIn({ email, name, photo, id });
     } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
@@ -55,7 +60,6 @@ export default function Login() {
   const logout = async () => {
     setUserInfo(null);
     setError(null);
-    // setIsLoggedIn(false);
     logOut();
     await GoogleSignin.signOut();
     await GoogleSignin.revokeAccess();

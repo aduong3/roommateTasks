@@ -17,12 +17,15 @@ const fakeData = [
 
 export default function Index() {
   const authState = useContext(AuthContext);
-  const { logOut } = authState;
+  const { logOut, user } = authState;
   return (
-    <>
-      <View className="flex-1 items-center justify-center">
+    <View className="flex-1 justify-center ">
+      <View className="items-center my-10">
         <Text>Log Out Here</Text>
         <Button onPress={logOut} title="Log Out" />
+      </View>
+      <View>
+        <Text className="text-2xl font-bold">{user?.name}</Text>
       </View>
       <View>
         <Text className="text-3xl font-semibold">Chores</Text>
@@ -39,6 +42,6 @@ export default function Index() {
           )}
         ></FlatList>
       </View>
-    </>
+    </View>
   );
 }

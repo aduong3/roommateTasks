@@ -18,7 +18,7 @@ export async function googleVerifyApi(idToken: string) {
       throw new Error(error);
     }
     const data = await res.json();
-    console.log(data);
+    return data.data;
   } catch (err) {
     if (err instanceof Error) {
       console.log(err.message);
