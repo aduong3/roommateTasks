@@ -10,16 +10,10 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
-const jwt_secret: string = process.env.EXPO_PUBLIC_JWT_SECRET!;
-const jwt_expires_in: string = process.env.EXPO_PUBLIC_JWT_EXPIRES_IN!;
-const options: SignOptions = {
-  expiresIn: jwt_expires_in,
-};
+const jwt_secret = process.env.JWT_SECRET as string;
 
 const signToken = (id: string): string => {
-  jwt.sign({ id }, jwt_secret, {
-    expiresIn: jwt_expires_in,
-  });
+  return jwt.sign({ id }, jwt_secret, { expiresIn: "1d" });
 };
 
 export const verifyGoogleLogIn = async (req: Request, res: Response) => {
@@ -38,10 +32,13 @@ export const verifyGoogleLogIn = async (req: Request, res: Response) => {
       user = await User.create({ email, photo: picture, name });
     }
 
+    const token = signToken(user._id.toString());
+
     res.status(200).json({
       status: "success",
       data: {
         user,
+        token,
       },
     });
   } catch (err) {

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import app from "./app.ts";
 
 dotenv.config({ path: "./.env" });
+import app from "./app.ts";
 
-const DB = process.env.EXPO_PUBLIC_DATABASE_URI!;
+const DB = process.env.DATABASE_URI!;
 
 mongoose.connect(DB).then(() => console.log("DB connection successful!"));
 
