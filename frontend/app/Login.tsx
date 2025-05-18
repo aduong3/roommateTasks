@@ -16,9 +16,9 @@ const webClient = process.env.EXPO_PUBLIC_WEBCLIENT_ID;
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<User | null>(null);
+
   const authState = useContext(AuthContext);
-  const { logIn, logOut } = authState;
+  const { logIn, logOut, isLoggedIn } = authState;
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -30,7 +30,6 @@ export default function Login() {
     try {
       await GoogleSignin.hasPlayServices();
       const res: SignInResponse = await GoogleSignin.signIn();
-      setUserInfo(res.data);
 
       const googleCredential = GoogleAuthProvider.credential(
         res?.data?.idToken
@@ -48,9 +47,7 @@ export default function Login() {
 
       await SecureStore.setItemAsync("jwt", userData.token);
 
-      const { email, name, photo, _id: id } = userData.user;
-
-      logIn({ email, name, photo, id });
+      logIn(userData.user);
     } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
@@ -58,7 +55,6 @@ export default function Login() {
   };
 
   const logout = async () => {
-    setUserInfo(null);
     setError(null);
     logOut();
     await GoogleSignin.signOut();
@@ -67,21 +63,8 @@ export default function Login() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <Text>{JSON.stringify(error)}</Text>
-      {userInfo && (
-        <>
-          {userInfo.user.photo && (
-            <View>
-              <Image
-                source={{ uri: userInfo.user.photo }}
-                style={{ width: 100, height: 100, borderRadius: 50 }}
-              />
-            </View>
-          )}
-          <Text>{JSON.stringify(userInfo.user)}</Text>
-        </>
-      )}
-      {userInfo ? (
+      {error && <Text>{JSON.stringify(error)}</Text>}
+      {isLoggedIn ? (
         <Button title="Logout" onPress={logout} />
       ) : (
         <GoogleSigninButton

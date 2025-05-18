@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Photo should be provided by Google Sign In."],
   },
+  house: {
+    type: mongoose.Schema.ObjectId,
+    ref: "House",
+  },
 });
 
 const User = mongoose.model("User", userSchema);

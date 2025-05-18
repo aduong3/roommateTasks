@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Button, FlatList, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { AuthContext } from "../../../utils/authContext";
 
 const fakeData = [
@@ -19,29 +20,13 @@ export default function Index() {
   const authState = useContext(AuthContext);
   const { logOut, user } = authState;
   return (
-    <View className="flex-1 justify-center ">
-      <View className="items-center my-10">
-        <Text>Log Out Here</Text>
-        <Button onPress={logOut} title="Log Out" />
+    <>
+      <StatusBar style="dark" backgroundColor="transparent" />
+      <View className="bg-gray-800 flex-1">
+        <View className="mt-20">
+          <Button onPress={logOut} title="Log Out" />
+        </View>
       </View>
-      <View>
-        <Text className="text-2xl font-bold">{user?.name}</Text>
-      </View>
-      <View>
-        <Text className="text-3xl font-semibold">Chores</Text>
-        <FlatList
-          data={fakeData}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          renderItem={({ item }) => (
-            <Text>
-              {item.title} - {item.person}
-            </Text>
-          )}
-        ></FlatList>
-      </View>
-    </View>
+    </>
   );
 }
