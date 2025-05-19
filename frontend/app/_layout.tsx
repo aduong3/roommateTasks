@@ -1,12 +1,12 @@
 import { Stack } from "expo-router";
-import { StatusBar } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "../utils/authContext";
 import "./globals.css";
 
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <StatusBar hidden={true} />
+      <StatusBar style="dark" />
       <Stack>
         <Stack.Screen
           name="Login"

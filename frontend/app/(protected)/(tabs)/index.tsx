@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { Button, FlatList, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { Button, Image, Text, View } from "react-native";
 import { AuthContext } from "../../../utils/authContext";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const fakeData = [
   {
@@ -21,11 +21,27 @@ export default function Index() {
   const { logOut, user } = authState;
   return (
     <>
-      <StatusBar style="dark" backgroundColor="transparent" />
-      <View className="bg-gray-800 flex-1">
-        <View className="mt-20">
-          <Button onPress={logOut} title="Log Out" />
+      <View className="bg-gray-50 flex-1 py-20">
+        <View className="flex flex-row items-center justify-between bg-blue-500 py-4 px-3">
+          <Text className="text-2xl text-white font-semibold">
+            {user?.name}
+          </Text>
+          <MaterialIcons
+            name="logout"
+            size={30}
+            color="white"
+            onPress={logOut}
+          />
         </View>
+        {!user?.house && (
+          <View className="flex-1 justify-center items-center mt-8">
+            <Text>You are currently not in a household!</Text>
+            <View className="flex-row gap-8 mt-5">
+              <Button title="Join by code" />
+              <Button title="Make a house" />
+            </View>
+          </View>
+        )}
       </View>
     </>
   );
