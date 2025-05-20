@@ -1,24 +1,13 @@
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import InputCode from "./InputCode";
 
 const NoHouse = () => {
   const [inputCode, setInputCode] = useState(false);
+
   return (
     <>
-      <View>
-        <Modal visible={inputCode} transparent={true}>
-          <View className="flex-1 bg-transparent justify-center items-center">
-            <View className="w-[90%] h-[25%] bg-blue-200">
-              <TouchableOpacity
-                onPress={() => setInputCode(false)}
-                className="bg-blue-500"
-              >
-                <Text>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      </View>
+      <InputCode inputCode={inputCode} setInputCode={setInputCode} />
       <View className="flex-1 justify-center items-center mt-8 px-3">
         <Text className="text-xl font-bold text-center">
           You are currently not in a household! Create or join one to start
