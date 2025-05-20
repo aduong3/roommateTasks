@@ -1,7 +1,9 @@
 import { useContext } from "react";
-import { Button, Image, Text, View } from "react-native";
+import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../utils/authContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import NoHouse from "../../../components/NoHouse";
+import HasHouse from "../../../components/HasHouse";
 
 const fakeData = [
   {
@@ -33,15 +35,8 @@ export default function Index() {
             onPress={logOut}
           />
         </View>
-        {!user?.house && (
-          <View className="flex-1 justify-center items-center mt-8">
-            <Text>You are currently not in a household!</Text>
-            <View className="flex-row gap-8 mt-5">
-              <Button title="Join by code" />
-              <Button title="Make a house" />
-            </View>
-          </View>
-        )}
+        {!user?.house && <NoHouse />}
+        {user?.house && <HasHouse />}
       </View>
     </>
   );
