@@ -1,22 +1,9 @@
 import { useContext } from "react";
-import { Button, Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import { AuthContext } from "../../../utils/authContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import NoHouse from "../../../components/NoHouse";
 import HasHouse from "../../../components/HasHouse";
-
-const fakeData = [
-  {
-    id: 1,
-    title: "Clean Kitchen",
-    person: "Andrew",
-  },
-  {
-    id: 2,
-    title: "Take out trash",
-    person: "Bri",
-  },
-];
 
 export default function Index() {
   const authState = useContext(AuthContext);

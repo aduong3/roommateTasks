@@ -1,13 +1,13 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import InputCode from "./InputCode";
+import HouseModal from "./HouseModal";
 
 const NoHouse = () => {
-  const [inputCode, setInputCode] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <InputCode inputCode={inputCode} setInputCode={setInputCode} />
+      <HouseModal visible={visible} setVisible={setVisible} />
       <View className="flex-1 justify-center items-center mt-8 px-3">
         <Text className="text-xl font-bold text-center">
           You are currently not in a household! Create or join one to start
@@ -16,13 +16,13 @@ const NoHouse = () => {
         <View className="flex-row gap-10 mt-5">
           <TouchableOpacity
             className="bg-blue-500 px-4 py-2 rounded-lg"
-            onPress={() => setInputCode(!inputCode)}
+            onPress={() => setVisible(!visible)}
           >
             <Text className="text-white font-semibold text-xl">
               Join with Code
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-blue-500 px-4 py-2">
+          <TouchableOpacity className="bg-blue-500 px-4 py-2 rounded-lg">
             <Text className="text-white font-semibold text-xl">
               Create Household
             </Text>

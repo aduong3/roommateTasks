@@ -2,11 +2,17 @@ import { View, Text, TextInput, Modal, TouchableOpacity } from "react-native";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
+type HouseModalProps = {
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+  mode: "join" | "create";
+};
+
 type CodeInput = {
   code: string;
 };
 
-const InputCode = ({ inputCode, setInputCode }) => {
+const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
   const {
     control,
     handleSubmit,
@@ -15,25 +21,25 @@ const InputCode = ({ inputCode, setInputCode }) => {
   } = useForm<CodeInput>({ defaultValues: { code: "" } });
 
   const onSubmit = (data: CodeInput) => {
-    setInputCode(false);
+    setVisible(false);
     console.log(data);
     reset();
   };
 
   const onCloseModal = () => {
-    setInputCode(false);
+    setVisible(false);
     reset();
   };
 
   return (
     <View>
-      <Modal visible={inputCode} transparent={true}>
+      <Modal visible={visible} transparent={true}>
         <View className="flex-1 bg-transparent justify-center items-center">
-          <View className="w-[90%] h-[25%] bg-blue-200">
+          <View className="w-[90%] h-[30%] bg-blue-300 rounded-lg">
             <View className="flex-1 items-center justify-center">
               <Controller
                 control={control}
-                rules={{ maxLength: 12 }}
+                rules={{ minLength: 12, maxLength: 12 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Enter Code"
@@ -68,4 +74,4 @@ const InputCode = ({ inputCode, setInputCode }) => {
   );
 };
 
-export default InputCode;
+export default HouseModal;
