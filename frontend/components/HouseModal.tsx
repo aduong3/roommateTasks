@@ -8,8 +8,9 @@ type HouseModalProps = {
   mode: "join" | "create";
 };
 
-type CodeInput = {
+type DataInput = {
   code: string;
+  name?: string;
 };
 
 const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
@@ -18,9 +19,9 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CodeInput>({ defaultValues: { code: "" } });
+  } = useForm<DataInput>({ defaultValues: { code: "", name: "" } });
 
-  const onSubmit = (data: CodeInput) => {
+  const onSubmit = (data: DataInput) => {
     setVisible(false);
     console.log(data);
     reset();
@@ -36,7 +37,24 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
       <Modal visible={visible} transparent={true}>
         <View className="flex-1 bg-transparent justify-center items-center">
           <View className="w-[90%] h-[30%] bg-blue-300 rounded-lg">
-            <View className="flex-1 items-center justify-center">
+            <View className="flex-1 items-center justify-center gap-3">
+              {mode === "create" && (
+                <Controller
+                  control={control}
+                  rules={{ minLength: 5, maxLength: 25 }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      placeholder="Enter House name"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      maxLength={25}
+                      className="text-2xl py-2 px-3"
+                    />
+                  )}
+                  name="name"
+                />
+              )}
               <Controller
                 control={control}
                 rules={{ minLength: 12, maxLength: 12 }}
@@ -47,7 +65,7 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
                     onChangeText={onChange}
                     value={value}
                     maxLength={12}
-                    className="text-2xl py-2 px-3"
+                    className="text-xl py-2 px-3"
                   />
                 )}
                 name="code"
