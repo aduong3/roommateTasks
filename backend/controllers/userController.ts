@@ -28,7 +28,7 @@ export const verifyGoogleLogIn = async (req: Request, res: Response) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ email, photo: picture, name });
+      user = await User.create({ email, photo: picture, name, house: null });
     }
 
     const token = signToken(user._id.toString());

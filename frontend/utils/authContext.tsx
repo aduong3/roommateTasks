@@ -6,7 +6,7 @@ type User = {
   name: string;
   email: string;
   photo: string;
-  house?: string;
+  house: string | null;
 };
 
 type AuthState = {
@@ -29,6 +29,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const logIn = (data: User) => {
+    console.log(data);
     setIsLoggedIn(true);
     setUser(data);
     router.replace("/");

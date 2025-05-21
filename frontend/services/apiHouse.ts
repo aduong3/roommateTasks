@@ -3,7 +3,15 @@ import { Platform } from "react-native";
 const baseURL =
   Platform.OS === "android" ? "http://10.0.2.2:3000" : "http://localhost:3000";
 
-export async function createHousehold(houseName, userId, houseCode) {
+export async function createHousehold({
+  houseName,
+  userId,
+  houseCode,
+}: {
+  houseName: string;
+  userId: string;
+  houseCode: string;
+}) {
   try {
     const res = await fetch(`${baseURL}/api/v1/house`, {
       method: "POST",

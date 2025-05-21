@@ -1,6 +1,8 @@
 import { View, Text, TextInput, Modal, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { createHousehold } from "../services/apiHouse";
+import { AuthContext } from "../utils/authContext";
 
 type HouseModalProps = {
   visible: boolean;
@@ -14,6 +16,8 @@ type DataInput = {
 };
 
 const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
+  const authState = useContext(AuthContext);
+  const { user } = authState;
   const {
     control,
     handleSubmit,
@@ -23,7 +27,16 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
 
   const onSubmit = (data: DataInput) => {
     setVisible(false);
-    console.log(data);
+    // console.log(data.name);
+    if (mode === "create") {
+      if (data?.name && user?.id && data?.code)
+        createHousehold({
+          houseName: data?.name!,
+          houseCode: data?.code,
+          userId: user?.id!,
+        });
+    }
+
     reset();
   };
 

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 
 import House from "../models/houseModel";
+import User from "../models/userModel";
+import mongoose from "mongoose";
 
 export const createHousehold = async (req: Request, res: Response) => {
   try {
@@ -9,9 +11,18 @@ export const createHousehold = async (req: Request, res: Response) => {
     const newHouse = await House.create({
       houseName,
       houseCode,
-      owner: userId,
-      members: [userId],
+      owner: new mongoose.Types.ObjectId(userId),
     });
+
+    await House.findByIdAndUpdate(newHouse._id, {
+      $push: { members: userId },
+    });
+
+    await User.findByIdAndUpdate(
+      userId,
+      { house: newHouse._id },
+      { new: true }
+    );
 
     res.status(200).json({
       status: "success",

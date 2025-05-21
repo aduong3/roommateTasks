@@ -44,10 +44,11 @@ export default function Login() {
       const userData = await googleVerifyApi(firebaseIdToken);
 
       if (!userData) return;
-
       await SecureStore.setItemAsync("jwt", userData.token);
 
-      logIn(userData.user);
+      const { _id, ...rest } = userData.user;
+
+      logIn({ ...rest, id: _id });
     } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
