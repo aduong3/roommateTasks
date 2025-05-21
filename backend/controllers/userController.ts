@@ -2,7 +2,6 @@ import admin from "firebase-admin";
 import { Request, Response } from "express";
 import serviceAccount from "../firebase/firebase-service-account.json";
 import jwt from "jsonwebtoken";
-import { SignOptions } from "jsonwebtoken";
 
 import User from "../models/userModel";
 

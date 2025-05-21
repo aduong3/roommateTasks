@@ -9,7 +9,13 @@ const houseSchema = new mongoose.Schema({
     type: String,
     required: [true, "Insert a code for others to join!"],
   },
-  members: {
+  members: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  owner: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
