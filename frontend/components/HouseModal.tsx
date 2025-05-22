@@ -25,16 +25,17 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
     reset,
   } = useForm<DataInput>({ defaultValues: { code: "", name: "" } });
 
-  const onSubmit = (data: DataInput) => {
+  const onSubmit = async (data: DataInput) => {
     setVisible(false);
     if (mode === "create") {
       if (data?.name && user?.id && data?.code) {
-        createHousehold({
+        const household = await createHousehold({
           houseName: data?.name!,
           houseCode: data?.code,
           userId: user?.id!,
         });
-        updateHousehold(data?.name);
+        const houseId: string = household.newHouse._id;
+        updateHousehold(data?.name, houseId);
       }
     }
     reset();

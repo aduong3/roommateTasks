@@ -13,9 +13,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Photo should be provided by Google Sign In."],
   },
-  house: {
+  houseId: {
     type: mongoose.Schema.ObjectId,
     ref: "House",
+  },
+  house: {
+    type: String,
   },
 });
 

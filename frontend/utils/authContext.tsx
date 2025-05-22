@@ -7,6 +7,7 @@ type User = {
   email: string;
   photo: string;
   house: string | null;
+  houseId: string | null;
 };
 
 type AuthState = {
@@ -14,7 +15,7 @@ type AuthState = {
   isLoggedIn: boolean;
   logIn: (data: User) => void;
   logOut: () => void;
-  updateHousehold: (houseName: string) => void;
+  updateHousehold: (houseName: string, houseId: string) => void;
 };
 
 export const AuthContext = createContext<AuthState>({
@@ -41,8 +42,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUser(null);
     router.replace("/Login");
   };
-  const updateHousehold = (houseName: string) => {
-    const updateUser: User = { ...user!, house: houseName };
+  const updateHousehold = (houseName: string, houseId: string) => {
+    const updateUser: User = { ...user!, house: houseName, houseId: houseId };
     setUser(updateUser);
   };
 

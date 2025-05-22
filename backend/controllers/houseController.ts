@@ -20,14 +20,47 @@ export const createHousehold = async (req: Request, res: Response) => {
 
     await User.findByIdAndUpdate(
       userId,
-      { house: newHouse._id },
+      { houseId: newHouse._id, house: newHouse.houseName },
       { new: true }
     );
 
-    res.status(200).json({
+    res.status(201).json({
       status: "success",
       data: {
         newHouse,
+      },
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({
+        status: "failed",
+        message: err.message,
+      });
+    } else {
+      res.status(400).json({
+        status: "failed",
+        message: err,
+      });
+    }
+  }
+};
+
+export const getUsersInHousehold = async (req: Request, res: Response) => {
+  try {
+    const house = await House.findById(req.params.id);
+
+    if (!house) {
+      throw new Error("User does not belong to any household.");
+    }
+    const houseMembers = house.members;
+    const listOfMembers = await User.find(
+      { _id: { $in: houseMembers } },
+      "name"
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        listOfMembers,
       },
     });
   } catch (err) {
