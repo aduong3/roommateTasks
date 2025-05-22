@@ -5,7 +5,7 @@ import {
   User,
 } from "@react-native-google-signin/google-signin";
 import { useContext, useEffect, useState } from "react";
-import { Button, Image, Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import { AuthContext } from "../utils/authContext";
 import { googleVerifyApi } from "../services/apiAuth";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";

@@ -17,7 +17,7 @@ type DataInput = {
 
 const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
   const authState = useContext(AuthContext);
-  const { user } = authState;
+  const { user, updateHousehold } = authState;
   const {
     control,
     handleSubmit,
@@ -27,16 +27,16 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
 
   const onSubmit = (data: DataInput) => {
     setVisible(false);
-    // console.log(data.name);
     if (mode === "create") {
-      if (data?.name && user?.id && data?.code)
+      if (data?.name && user?.id && data?.code) {
         createHousehold({
           houseName: data?.name!,
           houseCode: data?.code,
           userId: user?.id!,
         });
+        updateHousehold(data?.name);
+      }
     }
-
     reset();
   };
 
