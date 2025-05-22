@@ -32,7 +32,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const logIn = (data: User) => {
-    console.log(data);
+    // console.log(data);
     setIsLoggedIn(true);
     setUser(data);
     router.replace("/");

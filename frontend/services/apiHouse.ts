@@ -23,7 +23,26 @@ export async function createHousehold({
 
     if (!res.ok) {
       const error = await res.json();
-      console.log(error);
+      throw new Error(error);
+    }
+
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log(err);
+    }
+  }
+}
+
+export async function getHouseholdMembers(houseId: string) {
+  try {
+    const res = await fetch(`${baseURL}/api/v1/house/${houseId}`);
+
+    if (!res.ok) {
+      const error = await res.json();
       throw new Error(error);
     }
 

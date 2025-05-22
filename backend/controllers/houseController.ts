@@ -52,11 +52,13 @@ export const getUsersInHousehold = async (req: Request, res: Response) => {
     if (!house) {
       throw new Error("User does not belong to any household.");
     }
+
     const houseMembers = house.members;
     const listOfMembers = await User.find(
       { _id: { $in: houseMembers } },
       "name"
     );
+
     res.status(200).json({
       status: "success",
       data: {
