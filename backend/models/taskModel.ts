@@ -10,6 +10,10 @@ const taskSchema = new mongoose.Schema({
     ref: "House",
     required: [true, "Every task belongs to some household."],
   },
+  recurring: {
+    type: String,
+    default: "none",
+  },
   assignedTo: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
