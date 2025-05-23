@@ -56,3 +56,29 @@ export async function getHouseholdMembers(houseId: string) {
     }
   }
 }
+
+export async function joinHousehold(userId: string, houseCode: string) {
+  try {
+    const res = await fetch(`${baseURL}/api/v1/house/join`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, houseCode }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error);
+    }
+
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log(err);
+    }
+  }
+}

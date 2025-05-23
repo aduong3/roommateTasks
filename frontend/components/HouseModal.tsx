@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Modal, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { createHousehold } from "../services/apiHouse";
+import { createHousehold, joinHousehold } from "../services/apiHouse";
 import { AuthContext } from "../utils/authContext";
 
 type HouseModalProps = {
@@ -37,6 +37,8 @@ const HouseModal = ({ visible, setVisible, mode }: HouseModalProps) => {
         const houseId: string = household.newHouse._id;
         updateHousehold(data?.name, houseId);
       }
+    } else if (mode === "join") {
+      if (data?.code && user?.id) joinHousehold(user?.id, data?.code);
     }
     reset();
   };

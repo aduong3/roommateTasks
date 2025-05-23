@@ -79,3 +79,40 @@ export const getUsersInHousehold = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const joinHousehold = async (req: Request, res: Response) => {
+  try {
+    const { userId, houseCode } = req.body;
+
+    const house = await House.findOne({ houseCode });
+
+    if (!house) throw new Error("This house does not exist!");
+
+    await House.findByIdAndUpdate(house._id, {
+      $addToSet: { members: userId },
+    });
+
+    await User.findByIdAndUpdate(
+      userId,
+      { houseId: house._id, house: house.houseName },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "You have successfully joined a household!",
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({
+        status: "failed",
+        message: err.message,
+      });
+    } else {
+      res.status(400).json({
+        status: "failed",
+        message: err,
+      });
+    }
+  }
+};
