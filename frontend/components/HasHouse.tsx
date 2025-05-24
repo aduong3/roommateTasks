@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { getHouseholdMembers } from "../services/apiHouse";
 import { AuthContext } from "../utils/authContext";
@@ -23,11 +23,18 @@ const HasHouse = () => {
   }, [user?.houseId]);
 
   return (
-    <View className="flex-1 justify-center items-center mt-8 px-3">
-      {membersList.map((member) => (
-        <Text key={member._id}>{member.name}</Text>
-      ))}
-    </View>
+    <>
+      <View className="flex-1 justify-center items-center mt-8 px-3">
+        {membersList.map((member) => (
+          <Text key={member._id}>{member.name}</Text>
+        ))}
+      </View>
+      <View className="flex justify-center items-end px-6">
+        <TouchableOpacity className="bg-blue-500 px-4 py-2 rounded-lg">
+          <Text className="text-xl text-white">+</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 

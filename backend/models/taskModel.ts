@@ -5,12 +5,12 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: [true, "Every task needs a name!"],
   },
-  household: {
+  houseId: {
     type: mongoose.Schema.ObjectId,
     ref: "House",
     required: [true, "Every task belongs to some household."],
   },
-  recurring: {
+  recurrence: {
     type: String,
     default: "none",
   },
@@ -21,8 +21,8 @@ const taskSchema = new mongoose.Schema({
   dueDate: {
     type: Date,
   },
-  completed: {
-    type: Boolean,
+  completedAt: {
+    type: Date,
   },
 });
 
