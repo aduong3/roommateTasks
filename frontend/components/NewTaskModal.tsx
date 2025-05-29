@@ -1,6 +1,16 @@
-import { View, Text, Modal, TouchableOpacity, TextInput } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  TextInput,
+  Button,
+} from "react-native";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 
 type NewTaskModalProps = {
   visible: boolean;
@@ -15,6 +25,9 @@ type NewTaskDataInput = {
 };
 
 const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState<"date" | "time" | "datetime">("date");
+  const [show, setShow] = useState(false);
   const {
     control,
     handleSubmit,
@@ -28,6 +41,20 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
       assignedTo: "",
     },
   });
+
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode: "date" | "time" | "datetime") => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const showDatepicker = () => {
+    showMode("date");
+  };
 
   return (
     <View>
@@ -49,6 +76,16 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                 name="name"
               />
               {/* Date picker */}
+              <Button onPress={showDatepicker} title="Date picker" />
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  onChange={onDateChange}
+                />
+              )}
               {/* select picker for recurrence */}
               {/* assignedTo picker. Get all users and choose by name, but saved as user's id. */}
             </View>
