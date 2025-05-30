@@ -12,6 +12,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from "../utils/authContext";
 import { getHouseholdMembers } from "../services/apiHouse";
+import { createNewTask } from "../services/apiTask";
 
 type NewTaskModalProps = {
   visible: boolean;
@@ -64,6 +65,28 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
       assignedTo: "",
     },
   });
+
+  const onSubmit = async (data: NewTaskDataInput) => {
+    setVisible(false);
+    if (
+      data?.name &&
+      data?.dueDate &&
+      data?.recurrence &&
+      data?.assignedTo &&
+      user?.houseId
+    ) {
+      // console.log(data);
+      createNewTask(
+        data?.name,
+        data?.dueDate,
+        data?.recurrence,
+        data?.assignedTo,
+        user?.houseId
+      );
+
+      reset();
+    }
+  };
 
   useEffect(() => {
     async function fetchMembers() {
@@ -134,7 +157,9 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                     value={value}
                     items={recurItems}
                     setOpen={setOpenRecur}
-                    setValue={onChange}
+                    setValue={(cb) => {
+                      onChange(cb(value));
+                    }}
                     setItems={setRecurItems}
                     zIndex={3000}
                     zIndexInverse={1000}
@@ -153,7 +178,9 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                     value={value}
                     items={householdMembers}
                     setOpen={setOpenAssignedTo}
-                    setValue={onChange}
+                    setValue={(cb) => {
+                      onChange(cb(value));
+                    }}
                     setItems={setHouseholdMembers}
                     zIndex={1000}
                     zIndexInverse={3000}
@@ -171,7 +198,7 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
               </TouchableOpacity>
               <TouchableOpacity
                 className="bg-blue-500 py-2 px-3 rounded-lg"
-                onPress={() => setVisible(false)}
+                onPress={handleSubmit(onSubmit)}
               >
                 <Text className="text-white font-semibold text-lg">Submit</Text>
               </TouchableOpacity>
