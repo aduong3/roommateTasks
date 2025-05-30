@@ -8,9 +8,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DropDownPicker from "react-native-dropdown-picker";
 
 type NewTaskModalProps = {
   visible: boolean;
@@ -25,9 +24,15 @@ type NewTaskDataInput = {
 };
 
 const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState<"date" | "time" | "datetime">("date");
   const [show, setShow] = useState(false);
+
+  const [openRecur, setOpenRecur] = useState(false);
+  const [recurItems, setRecurItems] = useState([
+    { label: "None", value: "none" },
+    { label: "Weekly", value: "weekly" },
+    { label: "Monthly", value: "monthly" },
+  ]);
+
   const {
     control,
     handleSubmit,
@@ -37,24 +42,10 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
     defaultValues: {
       name: "",
       dueDate: new Date(),
-      recurrence: "",
+      recurrence: "none",
       assignedTo: "",
     },
   });
-
-  const onDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode: "date" | "time" | "datetime") => {
-    setShow(true);
-    setMode(currentMode);
-  };
-  const showDatepicker = () => {
-    showMode("date");
-  };
 
   return (
     <View>
@@ -64,6 +55,7 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
             <View className="flex-1 items-center py-6 px-4">
               <Controller
                 control={control}
+                name="name"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Task name"
@@ -73,20 +65,47 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                     className="py-2 px-3 text-xl"
                   />
                 )}
-                name="name"
               />
               {/* Date picker */}
-              <Button onPress={showDatepicker} title="Date picker" />
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={mode}
-                  is24Hour={true}
-                  onChange={onDateChange}
-                />
-              )}
+              <Controller
+                control={control}
+                name="dueDate"
+                render={({ field: { onChange, value } }) => (
+                  <>
+                    <Text>{value.toDateString()}</Text>
+                    <Button onPress={() => setShow(true)} title="Date picker" />
+                    {show && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={value}
+                        mode="date"
+                        is24Hour={true}
+                        onChange={(event, selectedDate) => {
+                          setShow(false);
+                          if (selectedDate) onChange(selectedDate);
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+              />
+
               {/* select picker for recurrence */}
+              <Controller
+                control={control}
+                name="recurrence"
+                render={({ field: { onChange, value } }) => (
+                  <DropDownPicker
+                    open={openRecur}
+                    value={value}
+                    items={recurItems}
+                    setOpen={setOpenRecur}
+                    setValue={onChange}
+                    setItems={setRecurItems}
+                  />
+                )}
+              />
+
               {/* assignedTo picker. Get all users and choose by name, but saved as user's id. */}
             </View>
             <View className="flex justify-center items-center py-2">
