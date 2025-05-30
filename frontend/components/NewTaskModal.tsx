@@ -6,10 +6,12 @@ import {
   TextInput,
   Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
+import { AuthContext } from "../utils/authContext";
+import { getHouseholdMembers } from "../services/apiHouse";
 
 type NewTaskModalProps = {
   visible: boolean;
@@ -24,6 +26,8 @@ type NewTaskDataInput = {
 };
 
 const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
+  const authState = useContext(AuthContext);
+  const { user } = authState;
   const [show, setShow] = useState(false);
 
   const [openRecur, setOpenRecur] = useState(false);
@@ -32,6 +36,20 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
     { label: "Weekly", value: "weekly" },
     { label: "Monthly", value: "monthly" },
   ]);
+  const [openAssignedTo, setOpenAssignedTo] = useState(false);
+  const [householdMembers, setHouseholdMembers] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([]);
+
+  const onRecurOpen = useCallback(() => {
+    setOpenAssignedTo(false);
+  }, []);
+  const onAssignToOpen = useCallback(() => {
+    setOpenRecur(false);
+  }, []);
 
   const {
     control,
@@ -47,12 +65,28 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
     },
   });
 
+  useEffect(() => {
+    async function fetchMembers() {
+      const houseId = user?.houseId;
+      const members = await getHouseholdMembers(houseId!);
+
+      const assignedToPickerFormat = members?.listOfMembers?.map(
+        (member: any) => ({
+          label: member.name,
+          value: member._id,
+        })
+      );
+      setHouseholdMembers(assignedToPickerFormat);
+    }
+    fetchMembers();
+  }, [user?.houseId]);
+
   return (
     <View>
       <Modal visible={visible} transparent={true}>
         <View className="flex-1 bg-transparent justify-center items-center">
           <View className="w-full h-[50%] bg-blue-300 rounded-lg">
-            <View className="flex-1 items-center py-6 px-4">
+            <View className="flex-1 items-center py-6 px-4 gap-6">
               <Controller
                 control={control}
                 name="name"
@@ -71,7 +105,7 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                 control={control}
                 name="dueDate"
                 render={({ field: { onChange, value } }) => (
-                  <>
+                  <View>
                     <Text>{value.toDateString()}</Text>
                     <Button onPress={() => setShow(true)} title="Date picker" />
                     {show && (
@@ -86,7 +120,7 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                         }}
                       />
                     )}
-                  </>
+                  </View>
                 )}
               />
 
@@ -102,20 +136,44 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                     setOpen={setOpenRecur}
                     setValue={onChange}
                     setItems={setRecurItems}
+                    zIndex={3000}
+                    zIndexInverse={1000}
+                    onOpen={onRecurOpen}
                   />
                 )}
               />
 
               {/* assignedTo picker. Get all users and choose by name, but saved as user's id. */}
+              <Controller
+                control={control}
+                name="assignedTo"
+                render={({ field: { onChange, value } }) => (
+                  <DropDownPicker
+                    open={openAssignedTo}
+                    value={value}
+                    items={householdMembers}
+                    setOpen={setOpenAssignedTo}
+                    setValue={onChange}
+                    setItems={setHouseholdMembers}
+                    zIndex={1000}
+                    zIndexInverse={3000}
+                    onOpen={onAssignToOpen}
+                  />
+                )}
+              />
             </View>
-            <View className="flex justify-center items-center py-2">
+            <View className="flex-row justify-evenly items-center py-4">
               <TouchableOpacity
                 className="bg-blue-500 py-2 px-3 rounded-lg"
                 onPress={() => setVisible(false)}
               >
-                <Text className="text-white font-semibold text-lg">
-                  Close Modal
-                </Text>
+                <Text className="text-white font-semibold text-lg">Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="bg-blue-500 py-2 px-3 rounded-lg"
+                onPress={() => setVisible(false)}
+              >
+                <Text className="text-white font-semibold text-lg">Submit</Text>
               </TouchableOpacity>
             </View>
           </View>
