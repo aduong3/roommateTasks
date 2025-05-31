@@ -93,10 +93,10 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
       const houseId = user?.houseId;
       const members = await getHouseholdMembers(houseId!);
 
-      const assignedToPickerFormat = members?.listOfMembers?.map(
+      const assignedToPickerFormat = members?.membersWithTasks?.map(
         (member: any) => ({
           label: member.name,
-          value: member._id,
+          value: member.userId,
         })
       );
       setHouseholdMembers(assignedToPickerFormat);
