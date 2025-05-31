@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import House from "../models/houseModel";
 import User from "../models/userModel";
 import mongoose from "mongoose";
+import Tasks from "../models/taskModel";
 
 export const createHousehold = async (req: Request, res: Response) => {
   try {
@@ -59,10 +60,24 @@ export const getUsersInHousehold = async (req: Request, res: Response) => {
       "name"
     );
 
+    const membersWithTasks = await Promise.all(
+      listOfMembers.map(async (user) => {
+        const tasks = await Tasks.find({
+          assignedTo: user._id,
+          houseId: house._id,
+        });
+        return {
+          userId: user._id,
+          name: user.name,
+          tasks,
+        };
+      })
+    );
+
     res.status(200).json({
       status: "success",
       data: {
-        listOfMembers,
+        membersWithTasks,
       },
     });
   } catch (err) {

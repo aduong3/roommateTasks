@@ -4,9 +4,16 @@ import { getHouseholdMembers } from "../services/apiHouse";
 import { AuthContext } from "../utils/authContext";
 import NewTaskModal from "./NewTaskModal";
 
-type MemberList = {
+type Task = {
   _id: string;
   name: string;
+  dueDate: Date;
+};
+
+type MemberList = {
+  userId: string;
+  name: string;
+  tasks: Task[];
 };
 
 const HasHouse = () => {
@@ -18,8 +25,8 @@ const HasHouse = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       const members = await getHouseholdMembers(user?.houseId!);
-      setMembersList(members.listOfMembers);
-      // console.log(members.listOfMembers);
+      setMembersList(members.membersWithTasks);
+      // console.log(members.membersWithTasks);
     };
     fetchMembers();
   }, [user?.houseId]);
@@ -27,9 +34,19 @@ const HasHouse = () => {
   return (
     <>
       <NewTaskModal visible={visible} setVisible={setVisible} />
-      <View className="flex-1 justify-center items-center mt-8 px-3">
+      <View className="flex-1 justify-center items-center mt-8 px-3 gap-8">
         {membersList.map((member) => (
-          <Text key={member._id}>{member.name}</Text>
+          <View key={member.userId}>
+            <Text className="text-2xl font-semibold">{member.name}</Text>
+            {member.tasks?.map((task) => (
+              <Text key={task._id}>
+                {task.name} -{" "}
+                {new Date(task.dueDate).toLocaleDateString(undefined, {
+                  weekday: "long",
+                })}
+              </Text>
+            ))}
+          </View>
         ))}
       </View>
       <View className="flex justify-center items-end px-6">
