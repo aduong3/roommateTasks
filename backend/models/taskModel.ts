@@ -24,6 +24,11 @@ const taskSchema = new mongoose.Schema({
   completedAt: {
     type: Date,
   },
+  status: {
+    type: String,
+    default: "not_started",
+    enum: ["not_started", "in_progress", "complete"],
+  },
 });
 
 const Tasks = mongoose.model("Tasks", taskSchema);

@@ -37,14 +37,18 @@ const HasHouse = () => {
       <View className="flex-1 mt-8 px-3 gap-8">
         {membersList.map((member) => (
           <View key={member.userId}>
-            <Text className="text-2xl font-semibold">
+            <Text className="text-3xl font-semibold">
               {user?.name === member.name ? "You" : member.name}
             </Text>
 
-            <View className="border-solid border-black border py-2 px-3">
+            {/* Extract this into a task card UI for each member.
+                Add in a drop down for task status. This will display an emoji along with the status on the
+                right side of the tasks.            
+            */}
+            <View className="border-solid border-black border py-2 px-3 rounded-lg">
               {member.tasks.length > 0 ? (
                 member.tasks?.map((task) => (
-                  <Text key={task._id} className="text-lg">
+                  <Text key={task._id} className="text-xl">
                     {task.name} -{" "}
                     {new Date(task.dueDate).toLocaleDateString(undefined, {
                       weekday: "long",
@@ -52,7 +56,7 @@ const HasHouse = () => {
                   </Text>
                 ))
               ) : (
-                <Text className="text-lg">No Tasks Assigned</Text>
+                <Text className="text-xl">No Tasks Assigned</Text>
               )}
             </View>
           </View>
