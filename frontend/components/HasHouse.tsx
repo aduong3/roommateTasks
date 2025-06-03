@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { getHouseholdMembers } from "../services/apiHouse";
 import { AuthContext } from "../utils/authContext";
 import NewTaskModal from "./NewTaskModal";
+import MemberTaskList from "./MemberTaskList";
 
 type Task = {
   _id: string;
@@ -34,34 +35,22 @@ const HasHouse = () => {
   return (
     <>
       <NewTaskModal visible={visible} setVisible={setVisible} />
-      <View className="flex-1 mt-8 px-3 gap-8">
-        {membersList.map((member) => (
-          <View key={member.userId}>
-            <Text className="text-3xl font-semibold">
-              {user?.name === member.name ? "You" : member.name}
-            </Text>
-
-            {/* Extract this into a task card UI for each member.
-                Add in a drop down for task status. This will display an emoji along with the status on the
-                right side of the tasks.            
-            */}
-            <View className="border-solid border-black border py-2 px-3 rounded-lg">
-              {member.tasks.length > 0 ? (
-                member.tasks?.map((task) => (
-                  <Text key={task._id} className="text-xl">
-                    {task.name} -{" "}
-                    {new Date(task.dueDate).toLocaleDateString(undefined, {
-                      weekday: "long",
-                    })}
-                  </Text>
-                ))
-              ) : (
-                <Text className="text-xl">No Tasks Assigned</Text>
-              )}
-            </View>
-          </View>
-        ))}
-      </View>
+      <FlatList
+        data={membersList}
+        keyExtractor={(item) => item.userId}
+        contentContainerStyle={{
+          paddingBottom: 100,
+          paddingTop: 20,
+          paddingHorizontal: 12,
+        }}
+        renderItem={({ item }) => (
+          <MemberTaskList
+            memberName={item.name}
+            isCurrentUser={user?.name === item.name}
+            tasks={item.tasks}
+          />
+        )}
+      />
       <View className="flex justify-center items-end px-6">
         <TouchableOpacity
           className="bg-blue-500 px-4 py-2 rounded-lg"
