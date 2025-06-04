@@ -9,6 +9,7 @@ type Task = {
   _id: string;
   name: string;
   dueDate: Date;
+  status: string;
 };
 
 type MemberList = {
@@ -39,9 +40,7 @@ const HasHouse = () => {
         data={membersList}
         keyExtractor={(item) => item.userId}
         contentContainerStyle={{
-          paddingBottom: 100,
-          paddingTop: 20,
-          paddingHorizontal: 12,
+          paddingHorizontal: 16,
         }}
         renderItem={({ item }) => (
           <MemberTaskList

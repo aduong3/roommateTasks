@@ -6,6 +6,7 @@ type Task = {
   _id: string;
   name: string;
   dueDate: Date;
+  status: string;
 };
 
 type Props = {
@@ -16,11 +17,13 @@ type Props = {
 
 const MemberTaskList = ({ memberName, isCurrentUser, tasks }: Props) => {
   return (
-    <View>
-      <Text>{isCurrentUser ? "You" : memberName}</Text>
+    <View className="py-2">
+      <Text className="text-2xl">{isCurrentUser ? "You" : memberName}</Text>
       <View className="border-solid border-black border py-2 px-3 rounded-lg">
         {tasks.length > 0 ? (
-          tasks?.map((task) => <TaskCard task={task} key={task._id} />)
+          tasks?.map((task, index) => (
+            <TaskCard task={task} key={task._id} index={index} />
+          ))
         ) : (
           <Text className="text-xl">No Tasks Assigned</Text>
         )}
