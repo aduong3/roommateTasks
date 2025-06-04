@@ -9,10 +9,9 @@ type Props = {
     dueDate: Date;
     status: string;
   };
-  index: number;
 };
 
-const TaskCard = ({ task, index }: Props) => {
+const TaskCard = ({ task }: Props) => {
   const dueDay = new Date(task.dueDate).toLocaleDateString(undefined, {
     weekday: "long",
   });
@@ -20,10 +19,7 @@ const TaskCard = ({ task, index }: Props) => {
     <View className="flex-row items-center justify-between">
       <Text className="text-xl">{task.name}</Text>
       <Text className="text-xl">{dueDay}</Text>
-      <StatusPicker
-        onSubmit={(val) => console.log(val)}
-        zIndex={3000 - index * 100}
-      />
+      <StatusPicker onSubmit={(val) => console.log(val)} />
     </View>
   );
 };

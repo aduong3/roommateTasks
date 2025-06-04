@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const StatusPicker = ({ onSubmit, zIndex }) => {
+const StatusPicker = ({ onSubmit }) => {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     { label: "Not Started", value: "not_started" },
@@ -36,28 +36,30 @@ const StatusPicker = ({ onSubmit, zIndex }) => {
       control={control}
       name="status"
       render={({ field: { onChange, value } }) => (
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={(cb) => {
-            const newVal = cb(currentStatus);
-            handleChange(newVal);
-          }}
-          setItems={setItems}
-          onChangeValue={handleChange}
-          zIndex={zIndex}
-          zIndexInverse={1000}
-          style={{
-            borderWidth: 0,
-            backgroundColor: "transparent",
-            maxHeight: 32,
-            maxWidth: 150,
-          }}
-          dropDownContainerStyle={{ backgroundColor: "#fff", maxWidth: 125 }}
-          textStyle={{ fontSize: 16 }}
-        />
+        <View className="flex-shrink w-44">
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={(cb) => {
+              const newVal = cb(currentStatus);
+              handleChange(newVal);
+            }}
+            setItems={setItems}
+            onChangeValue={handleChange}
+            zIndex={open ? 3000 : 1000}
+            zIndexInverse={1000}
+            style={{
+              borderWidth: 0,
+              backgroundColor: "transparent",
+              maxWidth: 150,
+              alignSelf: "center",
+            }}
+            dropDownContainerStyle={{ backgroundColor: "#fff", maxWidth: 150 }}
+            textStyle={{ fontSize: 16 }}
+          />
+        </View>
       )}
     />
   );
