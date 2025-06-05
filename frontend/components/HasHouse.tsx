@@ -28,7 +28,6 @@ const HasHouse = () => {
     const fetchMembers = async () => {
       const members = await getHouseholdMembers(user?.houseId!);
       setMembersList(members.membersWithTasks);
-      // console.log(members.membersWithTasks[0].tasks);
     };
     fetchMembers();
   }, [user?.houseId]);
