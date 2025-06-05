@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const StatusPicker = ({ onSubmit }) => {
-  const [open, setOpen] = useState(false);
+type Props = {
+  onSubmit: (val: any) => void;
+  open: number | null;
+  setOpen: React.Dispatch<React.SetStateAction<number | null>>;
+  index: number;
+};
+
+const StatusPicker = ({ onSubmit, open, setOpen, index }: Props) => {
   const [items, setItems] = useState([
     { label: "Not Started", value: "not_started" },
     { label: "In Progress", value: "in_progress" },
@@ -23,6 +29,7 @@ const StatusPicker = ({ onSubmit }) => {
       status: "not_started",
     },
   });
+  const isOpen = open === index;
 
   const currentStatus = watch("status");
 
@@ -38,17 +45,17 @@ const StatusPicker = ({ onSubmit }) => {
       render={({ field: { onChange, value } }) => (
         <View className="flex-shrink w-44">
           <DropDownPicker
-            open={open}
+            open={isOpen}
             value={value}
             items={items}
-            setOpen={setOpen}
+            setOpen={(openVal) => setOpen(openVal ? index : null)}
             setValue={(cb) => {
               const newVal = cb(currentStatus);
               handleChange(newVal);
             }}
             setItems={setItems}
             onChangeValue={handleChange}
-            zIndex={open ? 3000 : 1000}
+            zIndex={isOpen ? 3000 : 1000}
             zIndexInverse={1000}
             style={{
               borderWidth: 0,

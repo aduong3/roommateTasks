@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import StatusPicker from "./StatusPicker";
 import { AuthContext } from "../utils/authContext";
 
@@ -11,6 +11,9 @@ type Props = {
     status: string;
   };
   memberName: string;
+  index: number;
+  open: number | null;
+  setOpen: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 const status: Record<string, string> = {
@@ -19,7 +22,7 @@ const status: Record<string, string> = {
   complete: "Complete",
 };
 
-const TaskCard = ({ task, memberName }: Props) => {
+const TaskCard = ({ task, memberName, index, open, setOpen }: Props) => {
   const dueDay = new Date(task.dueDate).toLocaleDateString(undefined, {
     weekday: "long",
   });
@@ -30,7 +33,12 @@ const TaskCard = ({ task, memberName }: Props) => {
       <Text className="text-xl">{task.name}</Text>
       <Text className="text-xl">{dueDay}</Text>
       {user?.name === memberName && (
-        <StatusPicker onSubmit={(val) => console.log(val)} />
+        <StatusPicker
+          onSubmit={(val) => console.log(val)}
+          open={open}
+          setOpen={setOpen}
+          index={index}
+        />
       )}
       {user?.name !== memberName && (
         <Text className="text-lg">{status[task.status]}</Text>
