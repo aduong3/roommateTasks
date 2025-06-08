@@ -4,7 +4,7 @@ import { AuthContext } from "../../../utils/authContext";
 
 export default function ProtectedLayout() {
   const authState = useContext(AuthContext);
-  const { isLoggedIn } = authState;
+  const { isLoggedIn, user } = authState;
 
   if (!isLoggedIn) {
     return <Redirect href="/Login" />;
@@ -15,6 +15,14 @@ export default function ProtectedLayout() {
         <Tabs.Screen
           name="index"
           options={{ title: "Home", headerShown: false }}
+        />
+        <Tabs.Screen
+          name="teamMembers"
+          options={{
+            title: "Members",
+            headerShown: false,
+            href: user?.house ? "/teamMembers" : null,
+          }}
         />
       </Tabs>
     </>
