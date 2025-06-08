@@ -2,6 +2,7 @@ import { View, Text, Alert, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { getHouseholdMembers } from "../../../services/apiHouse";
 import { AuthContext } from "../../../utils/authContext";
+import Toast from "react-native-toast-message";
 
 type Task = {
   _id: string;
@@ -30,11 +31,25 @@ const TeamMembers = () => {
     fetchMembers();
   }, [user?.houseId]);
 
+  const showSuccessToast = (name: string) => {
+    Toast.show({
+      type: "success",
+      text1: `You have just pinged ${name}!`,
+    });
+  };
+  const showFailedToast = (name: string) => {
+    Toast.show({
+      type: "error",
+      text1: `Something went wrong with pinging ${name}`,
+    });
+  };
+
   const pingMember = async (name: string, userId: string) => {
     try {
-      Alert.alert(`You just pinged ${name}!`);
+      showSuccessToast(name);
+      // maybe will need userId to do some backend API function call and then have notifications sent.
     } catch (error) {
-      Alert.alert("Failed to send ping!");
+      showFailedToast(name);
     }
   };
 
