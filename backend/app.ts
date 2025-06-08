@@ -1,8 +1,9 @@
 import express from "express";
+import cors from "cors";
+
 import userRouter from "./routes/userRouter";
 import houseRouter from "./routes/houseRouter";
 import taskRouter from "./routes/taskRouter";
-import cors from "cors";
 
 const app = express();
 

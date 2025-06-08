@@ -29,19 +29,26 @@ const TaskCard = ({ task, memberName, index, open, setOpen }: Props) => {
   const authState = useContext(AuthContext);
   const { user } = authState;
   return (
-    <View className="flex-row items-center justify-between">
-      <Text className="text-xl">{task.name}</Text>
-      <Text className="text-xl">{dueDay}</Text>
-      {user?.name === memberName && (
-        <StatusPicker
-          onSubmit={(val) => console.log(val)}
-          open={open}
-          setOpen={setOpen}
-          index={index}
-        />
-      )}
+    <View className="flex-row items-center w-full px-1">
+      <Text className="text-xl flex-1" numberOfLines={1}>
+        {task.name}
+      </Text>
+
+      <Text className="text-xl px-4">{dueDay}</Text>
+      <View className="">
+        {user?.name === memberName && (
+          <StatusPicker
+            onSubmit={(val) => console.log(val)}
+            open={open}
+            setOpen={setOpen}
+            index={index}
+          />
+        )}
+      </View>
       {user?.name !== memberName && (
-        <Text className="text-lg">{status[task.status]}</Text>
+        <View className="pr-10 pl-6 py-3">
+          <Text className="text-lg">{status[task.status]}</Text>
+        </View>
       )}
     </View>
   );

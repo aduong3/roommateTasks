@@ -43,7 +43,7 @@ const StatusPicker = ({ onSubmit, open, setOpen, index }: Props) => {
       control={control}
       name="status"
       render={({ field: { onChange, value } }) => (
-        <View className="flex-shrink w-44">
+        <View className="w-40">
           <DropDownPicker
             open={isOpen}
             value={value}
@@ -60,11 +60,13 @@ const StatusPicker = ({ onSubmit, open, setOpen, index }: Props) => {
             style={{
               borderWidth: 0,
               backgroundColor: "transparent",
-              maxWidth: 150,
               alignSelf: "center",
+              padding: 0,
+              margin: 0,
             }}
-            dropDownContainerStyle={{ backgroundColor: "#fff", maxWidth: 150 }}
-            textStyle={{ fontSize: 16 }}
+            containerStyle={{ maxWidth: 130, padding: 0, margin: 0 }}
+            dropDownContainerStyle={{ backgroundColor: "#fff", maxWidth: 130 }}
+            textStyle={{ fontSize: 15 }}
           />
         </View>
       )}

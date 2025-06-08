@@ -119,6 +119,7 @@ const NewTaskModal = ({ visible, setVisible }: NewTaskModalProps) => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
+                    maxLength={12}
                     className="py-2 px-3 text-xl"
                   />
                 )}
