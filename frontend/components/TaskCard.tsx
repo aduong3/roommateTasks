@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React, { useContext, useState } from "react";
 import StatusPicker from "./StatusPicker";
 import { AuthContext } from "../utils/authContext";
+import { changeTaskStatus } from "../services/apiTask";
 
 type Props = {
   task: {
@@ -38,7 +39,7 @@ const TaskCard = ({ task, memberName, index, open, setOpen }: Props) => {
       <View className="">
         {user?.name === memberName && (
           <StatusPicker
-            onSubmit={(val) => console.log(val)}
+            onSubmit={(val) => changeTaskStatus(task._id, val.status)}
             open={open}
             setOpen={setOpen}
             index={index}

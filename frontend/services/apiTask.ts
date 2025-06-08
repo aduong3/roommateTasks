@@ -21,11 +21,36 @@ export async function createNewTask(
 
     if (!res.ok) {
       const error = await res.json();
-      throw new Error(error);
+      throw new Error(error.message);
     }
 
     const data = await res.json();
     return data.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log(err);
+    }
+  }
+}
+
+export async function changeTaskStatus(id: string, status: string) {
+  try {
+    const res = await fetch(`${baseURL}/api/v1/tasks/${id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message);
+    }
+    const data = await res.json();
+    console.log(data.data);
   } catch (err) {
     if (err instanceof Error) {
       console.log(err.message);
