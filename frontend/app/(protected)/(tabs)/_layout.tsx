@@ -17,11 +17,11 @@ export default function ProtectedLayout() {
           options={{ title: "Home", headerShown: false }}
         />
         <Tabs.Screen
-          name="teamMembers"
+          name="TeamMembers"
           options={{
             title: "Members",
             headerShown: false,
-            href: user?.house ? "/teamMembers" : null,
+            href: user?.house ? "/TeamMembers" : null,
           }}
         />
       </Tabs>

@@ -50,7 +50,6 @@ export async function changeTaskStatus(id: string, status: string) {
       throw new Error(error.message);
     }
     const data = await res.json();
-    console.log(data.data);
   } catch (err) {
     if (err instanceof Error) {
       console.log(err.message);
