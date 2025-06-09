@@ -13,6 +13,7 @@ const taskSchema = new mongoose.Schema({
   recurrence: {
     type: String,
     default: "none",
+    enum: ["none", "weekly", "monthly"],
   },
   assignedTo: {
     type: mongoose.Schema.ObjectId,
