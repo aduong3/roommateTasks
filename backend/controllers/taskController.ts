@@ -10,6 +10,11 @@ type Task = {
   houseId: string;
 };
 
+type UpdateData = {
+  status: string;
+  completedAt?: Date;
+};
+
 export const createNewTask = async (req: Request, res: Response) => {
   try {
     // req.body = taskName, dueDate, recurrence, assignTo (maybe)
@@ -50,19 +55,21 @@ export const changeTaskStatus = async (req: Request, res: Response) => {
     if (!id) {
       throw new Error("Task is not found!");
     }
+    const updateData: UpdateData = { status };
+    if (status === "complete") {
+      updateData.completedAt = new Date();
+    }
 
-    const taskComplete = await Tasks.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
+    let taskChange = await Tasks.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
-    if (!taskComplete) throw new Error("Task failed to complete");
+    if (!taskChange) throw new Error("Task failed to complete");
 
     res.status(200).json({
       status: "success",
       data: {
-        taskComplete,
+        taskChange,
       },
     });
   } catch (err) {
