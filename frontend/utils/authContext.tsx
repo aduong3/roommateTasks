@@ -8,6 +8,7 @@ type User = {
   photo: string;
   house: string | null;
   houseId: string | null;
+  expoPushToken?: string;
 };
 
 type AuthState = {
@@ -16,6 +17,7 @@ type AuthState = {
   logIn: (data: User) => void;
   logOut: () => void;
   updateHousehold: (houseName: string, houseId: string) => void;
+  setPushToken: (token: string) => void;
 };
 
 export const AuthContext = createContext<AuthState>({
@@ -24,6 +26,7 @@ export const AuthContext = createContext<AuthState>({
   logIn: () => {},
   logOut: () => {},
   updateHousehold: () => {},
+  setPushToken: () => {},
 });
 
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -47,9 +50,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUser(updateUser);
   };
 
+  const setPushToken = (token: string) => {
+    if (user) {
+      setUser({ ...user, expoPushToken: token });
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, logIn, logOut, user, updateHousehold }}
+      value={{ isLoggedIn, logIn, logOut, user, updateHousehold, setPushToken }}
     >
       {children}
     </AuthContext.Provider>
