@@ -14,6 +14,16 @@ import * as SecureStore from "expo-secure-store";
 
 const webClient = process.env.EXPO_PUBLIC_WEBCLIENT_ID;
 
+const fakeData = {
+  _id: "682f91f7c5d7ded9864c0e63",
+  email: "mythalink@gmail.com",
+  name: "Andrew Duong",
+  houseId: "682f9200c5d7ded9864c0e65",
+  house: "Dream Team Squad",
+  photo:
+    "https://lh3.googleusercontent.com/a/ACg8ocKHbAQGr3DS5b-anLDgulpbqcZNP_yg_I2T0kl7cpf21VtidyFz=s96-c",
+};
+
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
 
@@ -46,10 +56,11 @@ export default function Login() {
       if (!userData) return;
       await SecureStore.setItemAsync("jwt", userData.token);
 
-      const { _id, ...rest } = userData.user;
+      // const { _id, ...rest } = userData.user;
 
-      logIn({ ...rest, id: _id });
+      // logIn({ ...rest, id: _id });
     } catch (err) {
+      console.log(err);
       if (err instanceof Error) setError(err.message);
       else setError(String(err));
     }
