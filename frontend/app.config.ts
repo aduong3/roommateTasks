@@ -20,7 +20,7 @@ export default {
       },
       edgeToEdgeEnabled: true,
       package: "com.smoorz.roommatetasks",
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      googleServicesFile: "./google-services.json",
     },
     web: {
       bundler: "metro",

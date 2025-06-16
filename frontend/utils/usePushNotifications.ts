@@ -34,41 +34,47 @@ export const usePushNotifications = (): PushNotificationState => {
 
   async function registerForPushNotificationsAsync() {
     let token;
+    try {
+      if (Device.isDevice) {
+        const { status: existingStatus } =
+          await Notifications.getPermissionsAsync();
 
-    if (Device.isDevice) {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
 
-      let finalStatus = existingStatus;
+        if (existingStatus !== "granted") {
+          console.log("existingStatus not granted");
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== "granted") {
+          console.log("finalStatus not granted");
+          alert("Failed to get push token");
+        }
 
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token");
-      }
-
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
-      });
-
-      if (Platform.OS === "android") {
-        Notifications.setNotificationChannelAsync("default", {
-          name: "default",
-          importance: Notifications.AndroidImportance.HIGH,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: "#55CCFF",
+        token = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig?.extra?.eas?.projectId,
         });
-      }
 
-      return token;
-    } else {
-      console.log("ERROR: Please use a physical device.");
+        if (Platform.OS === "android") {
+          Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.HIGH,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: "#55CCFF",
+          });
+        }
+        console.log(token);
+        return token;
+      } else {
+        console.log("ERROR: Please use a physical device.");
+      }
+    } catch (err) {
+      console.log(err.message ?? err);
     }
   }
 
   useEffect(() => {
+    console.log("hook is running");
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
     });

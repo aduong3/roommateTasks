@@ -56,9 +56,9 @@ export default function Login() {
       if (!userData) return;
       await SecureStore.setItemAsync("jwt", userData.token);
 
-      // const { _id, ...rest } = userData.user;
+      const { _id, ...rest } = userData.user;
 
-      // logIn({ ...rest, id: _id });
+      logIn({ ...rest, id: _id });
     } catch (err) {
       console.log(err);
       if (err instanceof Error) setError(err.message);

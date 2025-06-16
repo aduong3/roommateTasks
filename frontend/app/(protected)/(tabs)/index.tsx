@@ -14,6 +14,7 @@ export default function Index() {
   const data = JSON.stringify(notification, undefined, 2);
 
   useEffect(() => {
+    console.log(expoPushToken);
     if (expoPushToken?.data && user?.id) {
       setPushToken(expoPushToken.data);
       //optional sendToken to backend too
@@ -34,7 +35,7 @@ export default function Index() {
             onPress={logOut}
           />
         </View>
-        <Text>Token: {expoPushToken?.data}</Text>
+        <Text>Token: {expoPushToken?.data ?? ""}</Text>
         <Text>{data}</Text>
         {!user?.house && <NoHouse />}
         {user?.house && <HasHouse />}

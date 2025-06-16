@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "407752981242",
+    "project_id": "roommatetasks-6718c",
+    "storage_bucket": "roommatetasks-6718c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407752981242:android:82d8ee624662ba72302743",
+        "android_client_info": {
+          "package_name": "com.smoorz.roommatetasks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407752981242-3pv6rs2bmer8dbcr71sfbhi3ekmdmeru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smoorz.roommatetasks",
+            "certificate_hash": "5b151de25b54389352ffc8b805ec976594545f2b"
+          }
+        },
+        {
+          "client_id": "407752981242-6ufusp1b5ccdmhs6j9pv15m2mh8ru52h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smoorz.roommatetasks",
+            "certificate_hash": "f3ca847f63ab505dc8a9d2bb0f587a98c4a80c86"
+          }
+        },
+        {
+          "client_id": "407752981242-0f6s6anbslt2nikecufbt4ccdhdkav5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9BTX6fojFxPuieg8Zu_Ce1lJWMmirPRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407752981242-0f6s6anbslt2nikecufbt4ccdhdkav5p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "407752981242-d0pn5roeh2k0bcallbmhrmkq9g1ltqec.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.smoorz.roommatetasks"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
