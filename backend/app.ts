@@ -6,10 +6,11 @@ import houseRouter from "./routes/houseRouter";
 import taskRouter from "./routes/taskRouter";
 
 const app = express();
+const allowedOrigins = process.env.CORS_ORIGINS?.split(",") || [];
 
 app.use(
   cors({
-    origin: ["http//localhost:3000"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
