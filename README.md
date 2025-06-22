@@ -1,50 +1,17 @@
-# Welcome to your Expo app 👋
+# roommateTasks
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+**roommateTasks** is a mobile application developed using Expo and React Native, designed to help roommates manage shared responsibilities and tasks. The app offers features such as:
 
-1. Install dependencies
+- Task assignment and tracking
+- Notifications for upcoming chores or events
+- A shared calendar for scheduling communal activities
 
-   ```bash
-   npm install
-   ```
+## Development Status
 
-2. Start the app
+As of now, the development of roommateTasks has been paused. The project has encountered performance issues, including significant system resource consumption, leading to instability on my development machine. Consequently, I am not actively developing or maintaining this project at this time.
 
-   ```bash
-   npx expo start
-   ```
+## Acknowledgments
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+I appreciate the learning experiences and challenges this project has provided. While development is currently on hold, the knowledge gained will inform future endeavors.
